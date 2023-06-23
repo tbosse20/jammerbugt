@@ -1,0 +1,5 @@
+<!DOCTYPE connections>
+<qgsWMSConnections version="1.0">
+    <wms ignoreGetMapURI="false" referer="" dpiMode="7" name="GEUS Grønlandsportalen" username="" url="http://data.geus.dk/geusmap/ows/32624.jsp" ignoreAxisOrientation="false" invertAxisOrientation="false" smoothPixmapTransform="false" ignoreGetFeatureInfoURI="false" password=""/>
+    <wms ignoreGetMapURI="false" referer="" dpiMode="7" name="GEUS WMS" username="" url="http://data.geus.dk/geusmap/ows/25832.jsp" ignoreAxisOrientation="false" invertAxisOrientation="false" smoothPixmapTransform="false" ignoreGetFeatureInfoURI="false" password=""/>
+</qgsWMSConnections>
