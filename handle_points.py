@@ -78,14 +78,15 @@ def load_points_to_dict(points_file: str, typenames: list):
         points = content['point']
         print(f'{typename}: {len(points)}')
 
+    return data_dict
 
 if __name__ == "__main__":
-    typenames = ['marta_images', 'marta_video']
     include = {
         'id': './/ns1:id',
         'coordinates': './/gml:Point/gml:coordinates',
         'lokalitet': './/ns1:lokalitet',
     }
+    typenames = ['marta_images', 'marta_video']
     points_file = 'points.xml'
     maxfeatures = 7000
 
