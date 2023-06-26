@@ -23,8 +23,8 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
   - Run _"download_medias_xml.py"_
 
 <p float="left">
-  <img src="presentation/seabed_data_video.png" width="100" />
-  <img src="presentation/seabed_data_images.png" width="100" /> 
+  <img src="presentation/seabed_data_video.png" width="300" />
+  <img src="presentation/seabed_data_images.png" width="300" /> 
 </p>
 
 ## Features
