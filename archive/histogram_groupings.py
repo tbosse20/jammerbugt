@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def create_histogram(
-        freq_name: str,  # Column title for counting words
-        stack_name: str,  # Column title for stacking
-        separate_word: str,  # Keyword for separating words in stack
-        excel_file: str,  # File to process
-        min_frequency: int = 0,  # Minimum occurrence of words
-        include_words: list = [],  # Only words to include
-        exclude_words: list = [],  # Words to ignorer
-        excel_rows: int = None,  # Rows in actual excel file
+def create_histogram_from_description(
+        freq_name: str,             # Column title for counting words
+        stack_name: str,            # Column title for stacking
+        separate_word: str,         # Keyword for separating words in stack
+        excel_file: str,            # File to process
+        min_frequency: int = 0,     # Minimum occurrence of words
+        include_words: list = [],   # Only words to include TODO: Didn't work
+        exclude_words: list = [],   # Words to ignorer
+        excel_rows: int = None,     # Rows in actual excel file
 ):
     """
     Plot frequency of words used in "beskrivels" seperated by GOPRO files or not.
@@ -19,8 +19,7 @@ def create_histogram(
     Note: Tried with inclusive words, but didn't work
     """
 
-    # Load the Excel file into a DataFrame
-    df = pd.read_excel(excel_file)
+    df = pd.read_excel(excel_file) # Load the Excel file into a DataFrame
 
     # Separate the values into two categories: with "GOPR" and without "GOPR"
     with_gopr = df[df[stack_name].str.contains(separate_word, na=False)][freq_name]
@@ -57,9 +56,10 @@ def create_histogram(
     without_gopr_nan = counts_without_gopr["nan"] if (counts_without_gopr.index == 'nan').any() else 0
     exclude_words.append('nan')
 
-    # Exclude specified words for each category
+    # Count excluded words
     with_gopr_removed = 0
     without_gopr_removed = 0
+    # Exclude specified words for each category
     for word in exclude_words:
         if word in counts_with_gopr:
             counts_with_gopr.drop(word, inplace=True)
@@ -68,19 +68,17 @@ def create_histogram(
             counts_without_gopr.drop(word, inplace=True)
             without_gopr_removed += 1
 
+    # Limit minimum frequency of words
     counts_with_gopr = counts_with_gopr[counts_with_gopr >= min_frequency]
     counts_without_gopr = counts_without_gopr[counts_without_gopr >= min_frequency]
 
+    # Print status of name, sum, nan, and removed elements in with and without GoPro
     txt = f'File: {excel_file}' + '\n'
     print(txt, end="")
-
-    # print(counts_with_gopr)
-    # print(counts_without_gopr)
     def status(name, sum, nan, removed, txt):
         print(f'{name} sum: {sum} nan={nan}, (rm words={removed})')
         txt += f'{name} sum: {sum} nan={nan}, (rm words={removed})' + '\n'
         return sum + nan + removed, txt
-
     total_with, txt = status('With', counts_with_gopr.sum(), with_gopr_nan, with_gopr_removed, txt)
     total_without, txt = status('Without', counts_without_gopr.sum(), without_gopr_nan, without_gopr_removed, txt)
     print(f'Total sum: {total_with + total_without} / {excel_rows} nan={with_gopr_nan + without_gopr_nan}')
@@ -101,7 +99,7 @@ def create_histogram(
     plt.show()
     print()
 
-
+# Words excluded in the description
 exclude_words = [
     'er', 'm', 'for', 'langt', '100', 'i', 'over', 'ca', 'information', 'yderligere',
     'startpunkt', 'reprµsenterer', 'mod', 'punkt', 'ikke', 'link', 'med', 'pσ', 'store', 'og',
@@ -121,9 +119,7 @@ exclude_words = [
     'som', 'flere', 'st', 'syd', 'stenen'
 ]
 
-include_words = ['1', '2', '3', '4', 'bio', 'bobel', 'sten', 'alger', 'sand', 'silt']
-
-create_histogram(
+create_histogram_from_description(
     freq_name='beskrivels',
     stack_name='filnavn',
     separate_word='GOPR',
@@ -135,7 +131,7 @@ create_histogram(
 )
 
 print('Note: All images starts with "G-" (indicates GoPro)')
-create_histogram(
+create_histogram_from_description(
     freq_name='beskrivels',
     stack_name='metode',
     separate_word='GoPro',

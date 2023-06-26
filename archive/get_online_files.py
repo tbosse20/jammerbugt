@@ -1,5 +1,12 @@
 import random
 
+''' Get information about the files in data.geus.dk '''
+
+''' !!!!!!!!!!!!!!!!!!!!! '''
+''' !!! OUTDATED FILE !!! '''
+''' !!!!!!!!!!!!!!!!!!!!! '''
+''' Data obtained easier using 'download_medias_xml.py' '''
+
 urls = {
     "nord": "https://data.geus.dk/geusmap/map.jsp?&0=0&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=marta_video&LAYERS=marta_video&MAPNAME=marta&EPSG=EPSG%3A25832&FILTER=&INFO_FORMAT=text%2Fhtml&I=50&J=50&CRS=EPSG%3A25832&STYLES=&WIDTH=10&HEIGHT=10&BBOX=513876.9290123458,6399293.595679009,520384.2592592594,6405800.9259259235&X=5&Y=5&FEATURE_COUNT=100",
     "south": "https://data.geus.dk/geusmap/map.jsp?&0=0&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=marta_video&LAYERS=marta_video&MAPNAME=marta&EPSG=EPSG%3A25832&FILTER=&INFO_FORMAT=text%2Fhtml&I=50&J=50&CRS=EPSG%3A25832&STYLES=&WIDTH=10&HEIGHT=10&BBOX=567712.54530223,6070367.380401232,572050.7654668392,6074705.6005658405&X=5&Y=5&FEATURE_COUNT=100",
@@ -7,6 +14,7 @@ urls = {
     "west": "https://data.geus.dk/geusmap/map.jsp?&0=0&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=marta_video&LAYERS=marta_video&MAPNAME=marta&EPSG=EPSG%3A25832&FILTER=&INFO_FORMAT=text%2Fhtml&I=50&J=50&CRS=EPSG%3A25832&STYLES=&WIDTH=10&HEIGHT=10&BBOX=348972.001198391,6306747.491781033,349828.93357658543,6307604.424159228&X=5&Y=5&FEATURE_COUNT=100",
     "west2": "https://data.geus.dk/geusmap/map.jsp?&0=0&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=marta_video&LAYERS=marta_video&MAPNAME=marta&EPSG=EPSG%3A25832&FILTER=&INFO_FORMAT=text%2Fhtml&I=50&J=50&CRS=EPSG%3A25832&STYLES=&WIDTH=10&HEIGHT=10&BBOX=393006.44716699334,6306323.267831432,393863.37954518775,6307180.200209627&X=5&Y=5&FEATURE_COUNT=100"
 }
+
 
 def split(string):
     start = "BBOX="
@@ -17,6 +25,7 @@ def split(string):
     data = string.split(",")
     data = [int(float(i)) for i in data]
     return data
+
 
 data = {}
 for dir, url in urls.items():
