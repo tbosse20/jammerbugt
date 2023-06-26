@@ -1,6 +1,4 @@
-import os
-
-import requests
+import os, requests
 import xml.etree.ElementTree as ET
 import xmltodict as xmltodict
 import data_types
@@ -42,6 +40,8 @@ def filter_files(points_file: str, max_elements: int=7000) -> ET.Element:
         'id': './/ns1:id',
         'coordinates': './/gml:Point/gml:coordinates',
     }
+
+    update_check(points_file)
 
     output_root = ET.Element("root")  # Create a new root element for the output XML
 

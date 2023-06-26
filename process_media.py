@@ -28,7 +28,7 @@ def save_file(response, folder_path, full_path):
     # Save file locally in 'downloads' file
     with open(full_path, 'wb') as file:
         file.write(response.content)
-    print(f"Success", end=". ")
+    print(f'Success', end='. ')
 
 
 def download_medias_from_points(
@@ -69,8 +69,9 @@ def download_medias_from_points(
         # Call method
         if call_method:
             call_method(full_path)
-            print(f'Method called', end=". ")
+            print(f'Method called', end='. ')
             os.remove(full_path)  # Delete file
+            print(f'Deleted', end='. ')
 
         print()
 def check_points_exist(points_file):
