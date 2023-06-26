@@ -22,9 +22,10 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
   - Run _"classify_points"_.
 
 ## Presentation
-Points on map with seabed (🔴=image, 🔵=video)
+Points on map with seabed (🔴=image, 🔵=video)     Shows the precision of the points according to actual file
 <p float="left">
   <img src="presentation/seabed_map_with_plots.png" width="400" />
+  <img src="presentation/precision.png" width="600" />
 </p>
 
 Graphs classified data
