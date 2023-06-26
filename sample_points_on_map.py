@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import download_points, data_types
 import xml.etree.ElementTree as ET
+from PIL import Image
 
 ''' Export file using QGIS
 Load from WMS https://docs.qgis.org/3.28/en/docs/training_manual/online_resources/wms.html
@@ -74,10 +75,10 @@ def plot_map(image_data, plots):
     '''
     plt.imshow(image_data)
     for key, values in plots.items():
-        plt.scatter(values['plot_x'], values['plot_y'], color=values['color'])
+        plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=1)
     plt.axis('off')
-    # plt.show()
-    plt.savefig(f'presentation/seabed_map_with_plots.png')
+    plt.show()
+    # plt.savefig(f'presentation/seabed_map_with_plots.png')
 
 def update_coordinates(point, geus_map:dict, src):
     coordinates = point.find('coordinates').text
@@ -85,8 +86,27 @@ def update_coordinates(point, geus_map:dict, src):
     x = map_value(coordinates[0], geus_map['x'][0], geus_map['x'][1], 0, src.width, within_bounds=False)
     y = map_value(coordinates[1], geus_map['y'][0], geus_map['y'][1], src.height, 0, within_bounds=False)
     return x, y
+def crop_tif_avoiding_black(image_path: str):
+    '''
+    Crop tif file to only have seabed data bounding box
+    Made with ChatGPT
+    :return: Cropped tif file
+    '''
+    image = Image.open(image_path)  # Open the image using PIL
+    grayscale_image = image.convert('L')  # Convert the image to grayscale
+    bbox = grayscale_image.getbbox()  # Get the bounding box coordinates of the non-black region
+    cropped_image = image.crop(bbox)  # Crop the image using the bounding box coordinates
+    cropped_image.save('cropped_' + image_path)
+    print(f'tif file cropped!')
+    return cropped_image
+def sample_points_on_map(tif_path, points_file):
 
-def sample_points_on_map(tif_path, geus_map, points_file):
+    # Manual set coordinates from map located on data.gues.dk
+    # TODO: Maybe not precise
+    geus_map = {
+        "x": [142319.03722847934, 975509.4100721639],  # [WEST, EAST]
+        "y": [6027326.68020619, 6458218.862079183],  # [SOUTH, NORTH]
+    }
 
     download_points.update_check(points_file)
 
@@ -95,7 +115,8 @@ def sample_points_on_map(tif_path, geus_map, points_file):
         'marta_images': {'color': 'red', 'plot_x': list(), 'plot_y': list()}
     }
 
-    with rasterio.open(tif_path) as src:
+    crop_tif_avoiding_black(tif_path)
+    with rasterio.open('cropped_' + tif_path) as src:
         image_data = src.read([1, 2, 3])
         image_data = image_data.transpose(1, 2, 0)
 
@@ -174,12 +195,5 @@ if __name__ == "__main__":
     tif_path = 'seabed_sediments_map.tif'  # Map obtained from QGIS (https://we.tl/t-hCZY6itJPa)
     points_file = 'points.xml'  # XML file of points to sample (obtained with "download_points.py")
 
-    # Manual set coordinates from map located on data.gues.dk
-    # TODO: Maybe not precise
-    geus_map = {
-        "x": [120591.75430574606, 1000073.6239711933],  # [LEFT, RIGHT]
-        "y": [6004745.402733848, 6458218.862079183],  # [BOTTOM, TOP]
-    }
-
-    sample_points_on_map(tif_path, geus_map, points_file)
+    sample_points_on_map(tif_path, points_file)
     # visualize_seabed_classification(points_file)
