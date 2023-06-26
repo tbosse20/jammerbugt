@@ -1,7 +1,7 @@
 import os, requests
 import xml.etree.ElementTree as ET
 import data_types
-
+import download_points
 
 def request_media_url(url):
     '''
@@ -41,6 +41,8 @@ def download_medias_from_points(
     Download files from separate media from Contents
     '''
 
+    check_points_exist(points_file)
+
     # Parse the XML file
     tree = ET.parse(points_file)  # Get XML file
     root = tree.getroot()
@@ -71,7 +73,13 @@ def download_medias_from_points(
             os.remove(full_path) # Delete file
 
         print()
+def check_points_exist(points_file):
+    # Check XML points existence
+    if os.path.exists(points_file):
+        return
 
+    download_points.download_files()
+    download_points.filter_files(points_file)
 
 def download_medias_from_contents(
         points_file,                # Path to XML point file
@@ -82,6 +90,8 @@ def download_medias_from_contents(
     Download all images or videos from Geus Marta Map into a 'downloads' file.
     Callable method between each iteration, with a deletion of the file afterwards
     '''
+
+    check_points_exist(points_file)
 
     # Loop "videos" and "images"
     for media in data_types.Medias:

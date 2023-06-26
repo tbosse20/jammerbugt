@@ -1,10 +1,9 @@
 import requests
 import xml.etree.ElementTree as ET
 import xmltodict as xmltodict
-from download_medias_xml import request_media_url
 import data_types
 
-def download_files(max_elements: int = 1):
+def download_files(max_elements: int = 7000):
     '''
     Download image and video files and save them as xml
     "marta_images.xml" and "marta_videos.xml"
@@ -29,13 +28,18 @@ def download_files(max_elements: int = 1):
         print("Success!")
 
 
-def filter_files(include: dict, max_elements: int, points_file: str) -> ET.Element:
+def filter_files(points_file: str, max_elements: int=7000) -> ET.Element:
     '''
     Filter XML file only passing included features
 
-    :param include: Feature to include
     :return: New saved XML file with included elements
     '''
+
+    # Feature to include
+    include = {
+        'id': './/ns1:id',
+        'coordinates': './/gml:Point/gml:coordinates',
+    }
 
     output_root = ET.Element("root")  # Create a new root element for the output XML
 
@@ -99,14 +103,8 @@ def load_points_to_dict(points_file: str):
     return data_dict
 
 if __name__ == "__main__":
-    include = {
-        'id': './/ns1:id',
-        'coordinates': './/gml:Point/gml:coordinates',
-        'lokalitet': './/ns1:lokalitet',
-    }
     points_file = 'points.xml'
-    max_elements = 7000
 
-    download_files(max_elements)
-    filter_files(include, max_elements, points_file)
+    download_files()
+    filter_files(points_file)
     load_points_to_dict(points_file)

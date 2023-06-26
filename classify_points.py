@@ -16,7 +16,7 @@ include = {
 max_elements = 7000
 
 download_files(max_elements)
-filter_files(include, max_elements, points_file)
+filter_files(points_file)
 
 # Sample points on map
 tif_path = 'seabed_sediments_map.tif'  # Map obtained from QGIS (https://we.tl/t-xFYj7HObw8)
@@ -28,4 +28,4 @@ geus_map = {
     "y": [6004745.402733848, 6458218.862079183],  # [BOTTOM, TOP]
 }
 
-sample_points_on_map(tif_path, geus_map, typenames, points_file)
+sample_points_on_map(tif_path, geus_map, points_file)
