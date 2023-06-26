@@ -18,13 +18,15 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 - Classify seabed points
   - Download and insert the _"seabed_sediments_map.tif"_ file. Link found in "Resources".
   - Delete _"limit"_ parameter.
-  - Run "main.py".
+  - Run _"classify_points"_.
 - Process media files
+  - Write _"call_method"_ to handle each media.
+  - Delete _"limit"_ parameter.
   - Run _"download_medias_xml.py"_
 
 <p float="left">
-  <img src="presentation/seabed_data_video.png" width="300" />
-  <img src="presentation/seabed_data_images.png" width="300" /> 
+  <img src="presentation/seabed_data_video.png" width="400" />
+  <img src="presentation/seabed_data_images.png" width="400" /> 
 </p>
 
 ## Features
