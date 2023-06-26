@@ -23,6 +23,6 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 - __points.xml__
 - __marta_video.xml__
 - __marta_image.xml__
-- __seabed_sediments_map.tif__ (https://we.tl/t-xFYj7HObw8)
+- __seabed_sediments_map.tif__ ([https://we.tl/t-hCZY6itJPa](https://we.tl/t-hCZY6itJPa))
 
 ## License - MIT
