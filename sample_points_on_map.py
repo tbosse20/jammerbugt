@@ -196,4 +196,4 @@ if __name__ == "__main__":
     points_file = 'points.xml'  # XML file of points to sample (obtained with "download_points.py")
 
     sample_points_on_map(tif_path, points_file)
-    # visualize_seabed_classification(points_file)
+    visualize_seabed_classification(points_file)
