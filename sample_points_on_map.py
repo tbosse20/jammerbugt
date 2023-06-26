@@ -164,7 +164,6 @@ def visualize_seabed_classification(points_file):
         plt.xticks(rotation=90)
         plt.grid(color='gray', linestyle='dashed', alpha=0.5)
         plt.tight_layout()  # Adjust the layout to prevent labels from going out of bounds
-        plt.show()
         plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
 
 if __name__ == "__main__":
