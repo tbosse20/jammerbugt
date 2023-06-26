@@ -22,7 +22,10 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 - Process media files
   - Run _"download_medias_xml.py"_
 
-![alt text](presentation/seabed_data_images.png)
+<p float="left">
+  <img src="presentation/seabed_data_videos.png" width="100" />
+  <img src="presentation/seabed_data_images.png" width="100" /> 
+</p>
 
 ## Features
 - Download "image" and "video" XML files, and filter points with id, coordinates, and download location. _("download_points.py")_
