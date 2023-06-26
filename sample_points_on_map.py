@@ -2,6 +2,7 @@ import rasterio, random
 import numpy as np
 from matplotlib import pyplot as plt
 import download_points, data_types
+import xml.etree.ElementTree as ET
 
 ''' Export file using QGIS
 Load from WMS https://docs.qgis.org/3.28/en/docs/training_manual/online_resources/wms.html
@@ -77,8 +78,8 @@ def plot_map(image_data, plots):
     plt.axis('off')
     plt.show()
 
-def update_coordinates(sample, geus_map:dict, src):
-    coordinates = sample['coordinates']
+def update_coordinates(point, geus_map:dict, src):
+    coordinates = point.find('coordinates').text
     coordinates = list(map(float, coordinates.split(',')))  # [float(i) for i in coordinates]
     x = map_value(coordinates[0], geus_map['x'][0], geus_map['x'][1], 0, src.width, within_bounds=False)
     y = map_value(coordinates[1], geus_map['y'][0], geus_map['y'][1], src.height, 0, within_bounds=False)
@@ -88,13 +89,9 @@ def sample_points_on_map(tif_path, geus_map, points_file):
 
     plots = {
         'marta_video': {
-            'color': 'blue',
-            'plot_x': list(), 'plot_y': list(),
-            'soil_types': {soil_type.name: [] for soil_type in data_types.Soil_types}
+            'color': 'blue', 'plot_x': list(), 'plot_y': list(),
         }, 'marta_images': {
-            'color': 'red',
-            'plot_x': list(), 'plot_y': list(),
-            'soil_types': {soil_type.name: [] for soil_type in data_types.Soil_types}
+            'color': 'red', 'plot_x': list(), 'plot_y': list()
         }
     }
 
@@ -102,27 +99,73 @@ def sample_points_on_map(tif_path, geus_map, points_file):
         image_data = src.read([1, 2, 3])
         image_data = image_data.transpose(1, 2, 0)
 
-        sample_points = download_points.load_points_to_dict(points_file)
+        tree_points = ET.parse(points_file)  # Get XML points file
+        root_points = tree_points.getroot()
         # print(f'width: {src.width}, height: {src.height}')
 
         for media in data_types.Medias:
-            image_samples = sample_points[media.name]['point']
+            media_points = root_points.find(media.name, data_types.namespace)
+            points = media_points.findall('point', data_types.namespace)
 
-            for i, sample in enumerate(image_samples):
+            for i, point in enumerate(points):
                 # if i >= 50: break
 
-                x, y = update_coordinates(sample, geus_map, src)
+                # Update coordinates according to GEUS map offset
+                x, y = update_coordinates(point, geus_map, src)
 
                 # Append coordinates to plot
                 plots[media.name]['plot_x'].append(x)
                 plots[media.name]['plot_y'].append(y)
 
-                # Save points with sample
+                # Sample point according to seabed
                 soil = sample_point([x, y], src)
                 if soil is None: soil = data_types.Soil_types.UNLOCATED.name
-                plots[media.name]['soil_types'][soil].append(sample['id'])
+
+                # Append assigned seabed to point element
+                seabed_feature = ET.Element('seabed')
+                seabed_feature.text = soil
+                point.append(seabed_feature)
+
+        tree_points.write(points_file)  # Update XML point file
 
         plot_map(image_data, plots)
+def visualize_seabed_classification(points_file):
+    '''
+    Visualize number of seabed classifications for "videos" and "images"
+    (With ChatGPT)
+    '''
+
+    tree_points = ET.parse(points_file)  # Get XML points file
+    root_points = tree_points.getroot()
+
+    # Loop medias
+    for i, media in enumerate(data_types.Medias):
+        media_points = root_points.find(media.name, data_types.namespace)
+        points = media_points.findall('point', data_types.namespace)
+
+        # Count each point
+        sub_element_count = {seabed.name: 0 for seabed in data_types.Soil_types}
+        for point in points:
+            seabed_text = point.find('seabed').text
+            sub_element_count[seabed_text] += 1
+
+        # Remove unlocated attribute if empty
+        unlocated = data_types.Soil_types.UNLOCATED.name
+        if sub_element_count[unlocated] <= 0:
+            sub_element_count.pop(unlocated)
+
+        labels = list(sub_element_count.keys())
+        counts = list(sub_element_count.values())
+
+        plt.bar(labels, counts)
+        plt.xlabel('Seabed')
+        plt.ylabel('Count')
+        plt.title(f'Seabed data "{media.name[6:]}"')
+        plt.xticks(rotation=90)
+        plt.grid(color='gray', linestyle='dashed', alpha=0.5)
+        plt.tight_layout()  # Adjust the layout to prevent labels from going out of bounds
+        plt.show()
+        plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
 
 if __name__ == "__main__":
 
@@ -137,3 +180,4 @@ if __name__ == "__main__":
     }
 
     sample_points_on_map(tif_path, geus_map, points_file)
+    visualize_seabed_classification(points_file)
