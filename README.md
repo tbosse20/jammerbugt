@@ -29,8 +29,8 @@ Graphs classified data
 </p>
 
 ## Features
-1. Download "image" and "video" XML files, and filter points with id, coordinates, and download location. _("download_points.py")_
-2. Download all images or videos from Geus Marta Map into a 'downloads' file from the XML point file. _("download_medias.xml.py")_
+1. Download "image" and "video" XML files, and filter points with point id and coordinates. _("download_points.py")_
+2. Download all images or videos from Geus Marta Map into a 'downloads' file from the XML point file, and process. _("download_medias.xml.py")_
 3. Sample points on map according to seabed sediments _("sample_points_on_map")_
 
 ## Resources
