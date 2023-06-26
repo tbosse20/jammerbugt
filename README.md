@@ -25,6 +25,7 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 Points on map with seabed (🔴=image, 🔵=video)
 <p float="left">
   <img src="presentation/seabed_map_with_plots.png" width="400" />
+  <img src="presentation/precision.png" width="400" />
 </p>
 
 Graphs classified data
