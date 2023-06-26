@@ -22,6 +22,11 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
   - Run _"classify_points"_.
 
 ## Presentation
+Points on map with seabed🔴
+<p float="left">
+  <img src="presentation/seabed_map_with_plots.png" width="400" />
+</p>
+
 Graphs classified data
 <p float="left">
   <img src="presentation/seabed_data_video.png" width="400" />
