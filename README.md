@@ -24,7 +24,7 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 
 <p float="left">
   <img src="presentation/seabed_data_videos.png" width="100" />
-  <img src="presentation/seabed_data_images.png" width="100" /> 
+  <img src="presentation/seabed_data_image.png" width="100" /> 
 </p>
 
 ## Features
