@@ -116,7 +116,5 @@ def update_check(file_path):
 if __name__ == "__main__":
     points_file = 'points.xml'
 
-    update_check(points_file)
-
     download_files()
     filter_files(points_file)

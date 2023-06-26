@@ -76,7 +76,8 @@ def plot_map(image_data, plots):
     for key, values in plots.items():
         plt.scatter(values['plot_x'], values['plot_y'], color=values['color'])
     plt.axis('off')
-    plt.show()
+    # plt.show()
+    plt.savefig(f'presentation/seabed_map_with_plots.png')
 
 def update_coordinates(point, geus_map:dict, src):
     coordinates = point.find('coordinates').text
@@ -117,13 +118,15 @@ def sample_points_on_map(tif_path, geus_map, points_file):
                 plots[media.name]['plot_y'].append(y)
 
                 # Sample point according to seabed
-                soil = sample_point([x, y], src)
-                if soil is None: soil = data_types.Seabeds.UNLOCATED.name
+                seabed = sample_point([x, y], src)
+                if seabed is None: seabed = data_types.Seabeds.UNLOCATED.name
 
-                # Append assigned seabed to point element
-                seabed_feature = ET.Element('seabed')
-                seabed_feature.text = soil
-                point.append(seabed_feature)
+                # Append or update assigned seabed to point element
+                seabed_feature = point.find('seabed')
+                if seabed_feature is None:
+                    seabed_feature = ET.Element('seabed')
+                    point.append(seabed_feature)
+                seabed_feature.text = seabed
 
         tree_points.write(points_file)  # Update XML point file
 
@@ -163,6 +166,7 @@ def visualize_seabed_classification(points_file):
         plt.xticks(rotation=90)
         plt.grid(color='gray', linestyle='dashed', alpha=0.5)
         plt.tight_layout()  # Adjust the layout to prevent labels from going out of bounds
+        # plt.show()
         plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
 
 if __name__ == "__main__":
@@ -178,4 +182,4 @@ if __name__ == "__main__":
     }
 
     sample_points_on_map(tif_path, geus_map, points_file)
-    visualize_seabed_classification(points_file)
+    # visualize_seabed_classification(points_file)
