@@ -11,6 +11,9 @@ Classify each points according to seabed sediments for machine learning training
 Data source: [Geus Marta data](
 https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=19081.47838710714,5990066.985780745,1043081.4783871071,6481066.985780745)
 
+## Warning
+- Do not upload the _"seabed_sediments_map.tif"_ to Github, as it is too big.
+  
 ## Run
 - Download and insert the _"seabed_sediments_map.tif"_ file. Link found in "Resources".
 - Run "main.py".
