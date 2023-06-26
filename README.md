@@ -15,14 +15,13 @@ https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=1908
 - Do not upload the _"seabed_sediments_map.tif"_ to Github, as it is too big.
   
 ## Run
-- Classify seabed points
-  - Download and insert the _"seabed_sediments_map.tif"_ file. Link found in "Resources".
-  - Delete _"limit"_ parameter.
-  - Run _"classify_points"_.
-- Process media files
+- Process media files:
   - Write _"call_method"_ to handle each media.
   - Delete _"limit"_ parameter.
   - Run _"download_medias_xml.py"_
+- Classify seabed points:
+  - Download and insert the _"seabed_sediments_map.tif"_ file. Link found in "Resources".
+  - Run _"classify_points"_.
 
 ## Presentation
 Graphs data
@@ -37,7 +36,7 @@ Graphs data
 - Sample points on map according to seabed sediments _("sample_points_on_map")_
 
 ## Resources
-- __points.xml__
+- __points.xml__ (existing of point id, coordinates, and seabed classification)
 - __marta_video.xml__
 - __marta_image.xml__
 - __seabed_sediments_map.tif__ (Download link: [https://we.tl/t-hCZY6itJPa](https://we.tl/t-hCZY6itJPa))
