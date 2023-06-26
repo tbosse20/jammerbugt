@@ -1,3 +1,5 @@
+import os
+
 import requests
 import xml.etree.ElementTree as ET
 import xmltodict as xmltodict
@@ -102,9 +104,19 @@ def load_points_to_dict(points_file: str):
 
     return data_dict
 
+def update_check(file_path):
+
+    # Check points existence
+    if os.path.exists(file_path):
+        update_points = input(f'Points already downloaded. Update? (y/n): ')
+        if update_points != 'y':
+            print('Aborted..')
+            exit()
+
 if __name__ == "__main__":
     points_file = 'points.xml'
 
+    update_check(points_file)
+
     download_files()
     filter_files(points_file)
-    load_points_to_dict(points_file)

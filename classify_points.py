@@ -11,11 +11,10 @@ points_file = 'points.xml'  # XML file of points to sample (obtained with "downl
 include = {
     'id': './/ns1:id',
     'coordinates': './/gml:Point/gml:coordinates',
-    'lokalitet': './/ns1:lokalitet',
+    # 'lokalitet': './/ns1:lokalitet',
 }
-max_elements = 7000
 
-download_files(max_elements)
+download_files()
 filter_files(points_file)
 
 # Sample points on map
@@ -29,3 +28,4 @@ geus_map = {
 }
 
 sample_points_on_map(tif_path, geus_map, points_file)
+visualize_seabed_classification(points_file)

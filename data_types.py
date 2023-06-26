@@ -9,9 +9,9 @@ class Medias(Enum):
         return key in cls.__members__
     # https://stackoverflow.com/a/66891151
 
-class Soil_types(Enum):
+class Seabeds(Enum):
     '''
-    Soil types given from data.geus.dk
+    Seabed types given from data.geus.dk
     (Colors manual set using plt)
     '''
     DYND =          [56,  168,  0]

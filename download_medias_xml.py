@@ -70,7 +70,7 @@ def download_medias_from_points(
         if call_method:
             call_method(full_path)
             print(f'Method called', end=". ")
-            os.remove(full_path) # Delete file
+            os.remove(full_path)  # Delete file
 
         print()
 def check_points_exist(points_file):

@@ -50,7 +50,7 @@ def sample_point(point, src):
         rgb_value = src.read(c, window=((y, y + 1), (x, x + 1)))[0][0]
         rgb_values.append(rgb_value)
     soil = None
-    for tmp_soil in data_types.Soil_types:
+    for tmp_soil in data_types.Seabeds:
         if tmp_soil.value != rgb_values: continue
         soil = tmp_soil.name
         break
@@ -87,12 +87,11 @@ def update_coordinates(point, geus_map:dict, src):
 
 def sample_points_on_map(tif_path, geus_map, points_file):
 
+    download_points.update_check(points_file)
+
     plots = {
-        'marta_video': {
-            'color': 'blue', 'plot_x': list(), 'plot_y': list(),
-        }, 'marta_images': {
-            'color': 'red', 'plot_x': list(), 'plot_y': list()
-        }
+        'marta_video': {'color': 'blue', 'plot_x': list(), 'plot_y': list()},
+        'marta_images': {'color': 'red', 'plot_x': list(), 'plot_y': list()}
     }
 
     with rasterio.open(tif_path) as src:
@@ -119,7 +118,7 @@ def sample_points_on_map(tif_path, geus_map, points_file):
 
                 # Sample point according to seabed
                 soil = sample_point([x, y], src)
-                if soil is None: soil = data_types.Soil_types.UNLOCATED.name
+                if soil is None: soil = data_types.Seabeds.UNLOCATED.name
 
                 # Append assigned seabed to point element
                 seabed_feature = ET.Element('seabed')
@@ -144,13 +143,13 @@ def visualize_seabed_classification(points_file):
         points = media_points.findall('point', data_types.namespace)
 
         # Count each point
-        sub_element_count = {seabed.name: 0 for seabed in data_types.Soil_types}
+        sub_element_count = {seabed.name: 0 for seabed in data_types.Seabeds}
         for point in points:
             seabed_text = point.find('seabed').text
             sub_element_count[seabed_text] += 1
 
         # Remove unlocated attribute if empty
-        unlocated = data_types.Soil_types.UNLOCATED.name
+        unlocated = data_types.Seabeds.UNLOCATED.name
         if sub_element_count[unlocated] <= 0:
             sub_element_count.pop(unlocated)
 
