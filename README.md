@@ -1,7 +1,7 @@
 # jammerbugt
 
 Map link: https://we.tl/t-xFYj7HObw8
-
+"seabed_sediments_map.tif"
 
 # Kig Under Vandet
 ### _Gues data training_
