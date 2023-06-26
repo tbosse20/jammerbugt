@@ -75,7 +75,7 @@ def plot_map(image_data, plots):
     '''
     plt.imshow(image_data)
     for key, values in plots.items():
-        plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=1)
+        plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=5)
     plt.axis('off')
     plt.show()
     # plt.savefig(f'presentation/seabed_map_with_plots.png')
