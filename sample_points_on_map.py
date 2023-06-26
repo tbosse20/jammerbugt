@@ -77,8 +77,8 @@ def plot_map(image_data, plots):
     for key, values in plots.items():
         plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=5)
     plt.axis('off')
-    plt.show()
-    # plt.savefig(f'presentation/seabed_map_with_plots.png')
+    # plt.show()
+    plt.savefig(f'presentation/seabed_map_with_plots.png')
 
 def update_coordinates(point, geus_map:dict, src):
     coordinates = point.find('coordinates').text
@@ -196,4 +196,4 @@ if __name__ == "__main__":
     points_file = 'points.xml'  # XML file of points to sample (obtained with "download_points.py")
 
     sample_points_on_map(tif_path, points_file)
-    visualize_seabed_classification(points_file)
+    # visualize_seabed_classification(points_file)
