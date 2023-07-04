@@ -10,7 +10,7 @@ Data source: [Geus Marta data](
 https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=19081.47838710714,5990066.985780745,1043081.4783871071,6481066.985780745)
 
 ## QGIS guide and resources
-- _"QGIS_WMS_manual_guide.pdf"_ - Selfmade manual for opening WMS server data in QGIS
+- _"presentation/QGIS_WMS_manual_guide.pdf"_ - Selfmade manual for opening WMS server data in QGIS
 - _"qgis_project.qgz"_ - Selfmade QGIS project with sediment, images, and videos
 - _"GEUS_MARTA_WMS.xml"_ [GEUS QGIS](https://data.geus.dk/geusmapmore/qgis/qgis_dk.html)
 - [10.1. Lesson: Web Mapping Services (WMS)](https://docs.qgis.org/3.28/en/docs/training_manual/online_resources/wms.html)
