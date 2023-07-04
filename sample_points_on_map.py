@@ -104,8 +104,8 @@ def sample_points_on_map(tif_path, points_file):
     # Manual set coordinates from map located on data.gues.dk
     # TODO: Maybe not precise
     geus_map = {
-        "x": [142319.03722847934, 975509.4100721639],  # [WEST, EAST]
-        "y": [6027326.68020619, 6458218.862079183],  # [SOUTH, NORTH]
+        "x": [103567.5180, 1025492.4511],  # [WEST, EAST]
+        "y": [6002748.3858, 6486523.2431],  # [SOUTH, NORTH]
     }
 
     download_points.update_check(points_file)
@@ -115,8 +115,9 @@ def sample_points_on_map(tif_path, points_file):
         'marta_images': {'color': 'red', 'plot_x': list(), 'plot_y': list()}
     }
 
-    crop_tif_avoiding_black(tif_path)
-    with rasterio.open('cropped_' + tif_path) as src:
+    # crop_tif_avoiding_black(tif_path)
+    print(tif_path)
+    with rasterio.open(tif_path) as src:
         image_data = src.read([1, 2, 3])
         image_data = image_data.transpose(1, 2, 0)
 
@@ -193,6 +194,7 @@ def visualize_seabed_classification(points_file):
 if __name__ == "__main__":
 
     tif_path = 'seabed_sediments_map.tif'  # Map obtained from QGIS (https://we.tl/t-hCZY6itJPa)
+    tif_path = 'test1.tif'  # Map obtained from QGIS (https://we.tl/t-hCZY6itJPa)
     points_file = 'points.xml'  # XML file of points to sample (obtained with "download_points.py")
 
     sample_points_on_map(tif_path, points_file)
