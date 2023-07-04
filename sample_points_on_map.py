@@ -77,8 +77,8 @@ def plot_map(image_data, plots):
     for key, values in plots.items():
         plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=5)
     plt.axis('off')
-    # plt.show()
-    plt.savefig(f'presentation/seabed_map_with_plots.png')
+    plt.show()
+    # plt.savefig(f'presentation/seabed_map_with_plots.png')
 
 def update_coordinates(point, geus_map:dict, src):
     coordinates = point.find('coordinates').text
@@ -115,8 +115,8 @@ def sample_points_on_map(tif_path, points_file):
         'marta_images': {'color': 'red', 'plot_x': list(), 'plot_y': list()}
     }
 
-    # crop_tif_avoiding_black(tif_path)
-    print(tif_path)
+    crop_tif_avoiding_black(tif_path)
+
     with rasterio.open(tif_path) as src:
         image_data = src.read([1, 2, 3])
         image_data = image_data.transpose(1, 2, 0)
@@ -188,13 +188,12 @@ def visualize_seabed_classification(points_file):
         plt.xticks(rotation=90)
         plt.grid(color='gray', linestyle='dashed', alpha=0.5)
         plt.tight_layout()  # Adjust the layout to prevent labels from going out of bounds
-        # plt.show()
-        plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
+        plt.show()
+        # plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
 
 if __name__ == "__main__":
 
     tif_path = 'seabed_sediments_map.tif'  # Map obtained from QGIS (https://we.tl/t-hCZY6itJPa)
-    tif_path = 'test1.tif'  # Map obtained from QGIS (https://we.tl/t-hCZY6itJPa)
     points_file = 'points.xml'  # XML file of points to sample (obtained with "download_points.py")
 
     sample_points_on_map(tif_path, points_file)
