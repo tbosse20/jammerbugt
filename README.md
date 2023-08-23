@@ -1,6 +1,6 @@
 
 # Kig Under Vandet - Aalborg University
-## _Gues data training_
+## _GEUS data training_
 
 ## Description
 - Download data from GEUS MARTA in form of points, video, images, and seabed sediments. 
@@ -8,6 +8,13 @@
 - Process each point with downloaded media.
 Data source: [Geus Marta data](
 https://data.geus.dk/geusmap/?mapname=marta#baslay=baseMapDa&optlay=&extent=19081.47838710714,5990066.985780745,1043081.4783871071,6481066.985780745)
+
+## QGIS guide and resources
+- _"presentation/QGIS_WMS_manual_guide.pdf"_ - Selfmade manual for opening WMS server data in QGIS
+- _"qgis_project.qgz"_ - Selfmade QGIS project with sediment, images, and videos
+- _"GEUS_MARTA_WMS.xml"_ [GEUS QGIS](https://data.geus.dk/geusmapmore/qgis/qgis_dk.html)
+- [10.1. Lesson: Web Mapping Services (WMS)](https://docs.qgis.org/3.28/en/docs/training_manual/online_resources/wms.html)
+- [Export Data in GeoTIFF formats](https://maps.cga.harvard.edu/qgis_2/wkshop/export_GeoTiff.php)
 
 ## Warning
 - Do not upload the _"seabed_sediments_map.tif"_ to Github, as it is too big.
@@ -41,8 +48,8 @@ Graphs classified data
 
 ## Resources
 - __points.xml__ (existing of point id, coordinates, and seabed classification)
-- __marta_video.xml__
-- __marta_image.xml__
+- __marta_video.xml__ [Video points XML data](data.geus.dk/geusmap/ows/25832.jsp?nocache=nocache&whoami=178.157.255.197&typename=marta_video&service=WFS&version=1.0.0&mapname=marta&maxfeatures=7000&outputformat=gml2&request=GetFeature)
+- __marta_image.xml__ [Image points XML data](https://data.geus.dk/geusmap/ows/25832.jsp?nocache=nocache&whoami=178.157.255.197&typename=marta_images&service=WFS&version=1.0.0&mapname=marta&maxfeatures=7000&outputformat=gml2&request=GetFeature)
 - __seabed_sediments_map.tif__ (Download link: [https://we.tl/t-hCZY6itJPa](https://we.tl/t-hCZY6itJPa))
 
 ### Contributors

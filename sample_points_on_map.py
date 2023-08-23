@@ -77,8 +77,8 @@ def plot_map(image_data, plots):
     for key, values in plots.items():
         plt.scatter(values['plot_x'], values['plot_y'], color=values['color'], s=5)
     plt.axis('off')
-    # plt.show()
-    plt.savefig(f'presentation/seabed_map_with_plots.png')
+    plt.show()
+    # plt.savefig(f'presentation/seabed_map_with_plots.png')
 
 def update_coordinates(point, geus_map:dict, src):
     coordinates = point.find('coordinates').text
@@ -104,8 +104,8 @@ def sample_points_on_map(tif_path, points_file):
     # Manual set coordinates from map located on data.gues.dk
     # TODO: Maybe not precise
     geus_map = {
-        "x": [142319.03722847934, 975509.4100721639],  # [WEST, EAST]
-        "y": [6027326.68020619, 6458218.862079183],  # [SOUTH, NORTH]
+        "x": [103567.5180, 1025492.4511],  # [WEST, EAST]
+        "y": [6002748.3858, 6486523.2431],  # [SOUTH, NORTH]
     }
 
     download_points.update_check(points_file)
@@ -116,7 +116,8 @@ def sample_points_on_map(tif_path, points_file):
     }
 
     crop_tif_avoiding_black(tif_path)
-    with rasterio.open('cropped_' + tif_path) as src:
+
+    with rasterio.open(tif_path) as src:
         image_data = src.read([1, 2, 3])
         image_data = image_data.transpose(1, 2, 0)
 
@@ -187,8 +188,8 @@ def visualize_seabed_classification(points_file):
         plt.xticks(rotation=90)
         plt.grid(color='gray', linestyle='dashed', alpha=0.5)
         plt.tight_layout()  # Adjust the layout to prevent labels from going out of bounds
-        # plt.show()
-        plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
+        plt.show()
+        # plt.savefig(f'presentation/seabed_data_{media.name[6:]}.png')
 
 if __name__ == "__main__":
 
