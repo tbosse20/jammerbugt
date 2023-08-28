@@ -7,18 +7,22 @@ import os
 
 if __name__ == '__main__':
 
-    alpha = 0.5
-
+    # Load image
     folder = 'SideScans'
     angle = -30
-    chunk_size = 25
 
     # Input and labels
+    chunk_size = 25
     num_channels = 3
     num_classes = 5
 
     # CNN
     weights_file = 'cnn_model_weights.h5'
+
+    # Draw
+    alpha = 0.5
+
+    # -----------------------------------
 
     images = OpenTIF2.load_images(folder, angle, chunk_size)
     image = images[0]
