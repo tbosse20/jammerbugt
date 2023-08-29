@@ -1,5 +1,4 @@
 import random
-
 import numpy as np
 from sklearn.model_selection import train_test_split
 from PIL import Image
@@ -108,7 +107,6 @@ def test_model(model, test_images, test_labels):
 
 
 def load_image(path, image_size):
-
     img = Image.open(path)
     img = img.resize((image_size, image_size))  # Resize to match model's input size
     img_array = np.array(img) / 255.0  # Normalize pixel values
@@ -133,8 +131,8 @@ def predict(model, new_images):
 
     return predicted_labels
 
-def predict_image(model, image, chunk_size, num_classes):
 
+def predict_image(model, image, chunk_size, num_classes, json_filename):
     print('Predict image..')
 
     import cv2
@@ -176,10 +174,10 @@ def predict_image(model, image, chunk_size, num_classes):
 
     import json
     # save dictionary to person_data.pkl file
-    json_filename = 'chunk_predict.json'
     with open(json_filename, 'w') as json_file:
         json.dump(patch_predictions_dict, json_file)
         print('dictionary saved successfully to file')
+
 
 def load_json(file_name):
     import json
@@ -204,7 +202,7 @@ if __name__ == '__main__':
     # Train the model
     batch_size = 32
     epochs = 25
-    weights_file = 'cnn_model_weights.h5'
+    weights_file = 'classified/cnn_model_weights.h5'
 
     model = create_model(image_size, num_channels, num_classes, weights_file, train=train)
 

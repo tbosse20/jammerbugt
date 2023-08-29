@@ -1,9 +1,5 @@
-import OpenTIF2
-import CNN
+import OpenTIF2, CNN, random, cv2, os
 import numpy as np
-import random
-import cv2
-import os
 
 if __name__ == '__main__':
 
@@ -17,14 +13,15 @@ if __name__ == '__main__':
     num_classes = 5
 
     # CNN
-    weights_file = 'cnn_model_weights.h5'
+    weights_file = 'classified/cnn_model_weights.h5'
+    json_filename = 'classified/chunk_predict.json'
 
     # Draw
     alpha = 0.5
 
     # -----------------------------------
 
-    images = OpenTIF2.load_images(folder, angle, chunk_size)
+    images = OpenTIF2.load_images(folder, chunk_size, angle, save=True)
     image = images[0]
     image = image[:1000, :]
 
@@ -32,7 +29,7 @@ if __name__ == '__main__':
         model = CNN.create_model(chunk_size, num_channels, num_classes, weights_file)
         CNN.predict_image(model, image, chunk_size, num_classes)
 
-    chunk_predict = CNN.load_json('chunk_predict.json')
+    chunk_predict = CNN.load_json('classified/chunk_predict.json')
     print(chunk_predict)
 
     def draw_chunk(image, chunk_predict):

@@ -11,15 +11,12 @@ substracts = {
     "dark blue": [120, 255, 255],  # 4
 }
 
-def separate_colors(path, output_folder):
+def separate_colors(anotated_img_path):
 
     cover_color = [0, 0, 255]
+    output_folder = ConvertImages.handle_sub_folder(anotated_img_path, 'images')
 
-    # Create output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-
-    image = cv2.imread(path)
+    image = cv2.imread(anotated_img_path)
 
     _, threshold = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)
     edge = copy.deepcopy(threshold)
@@ -33,7 +30,6 @@ def separate_colors(path, output_folder):
     # test = copy.deepcopy(image)
     # test[np.where(proc_edge == 0)] = [0]
     # cv2.imshow(f'Color Cont', test)
-
 
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
@@ -83,16 +79,11 @@ def separate_colors(path, output_folder):
     # cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    path = 'em070.006_binned_jsf-ch12_SS_Interp.TIF'
+
+    super_folder = 'classified'
     # path_no = 'em070.006_binned_jsf-ch12_SS_No Interp.TIF'
-    classified_folder = 'classified'
-    output_folder = os.path.join(classified_folder, 'images')
-    chunk_folder = os.path.join(classified_folder, 'chunks')
+    anotated_img_path = os.path.join(super_folder, 'em070.006_binned_jsf-ch12_SS_Interp.TIF')
     chunk_size = 25
 
-    # Create output folder if it doesn't exist
-    if not os.path.exists(classified_folder):
-        os.makedirs(classified_folder)
-
-    separate_colors(path, output_folder)
-    ConvertImages.split_images(output_folder, chunk_size, chunk_folder)
+    separate_colors(anotated_img_path)
+    ConvertImages.split_images(super_folder, chunk_size, save=True)

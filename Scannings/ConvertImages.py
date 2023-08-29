@@ -3,35 +3,54 @@ import PyPDF2
 import cv2
 import numpy as np
 
+def check_folder_existence(folder):
+    # Create output folder if it doesn't exist
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
-def extract_image_from_pdf(pdf_path, output_folder, file_num):
+def handle_sub_folder(super_folder, sub_folder):
+
+    super_folder = super_folder.split("\\")[0]
+    sub_folder = os.path.join(super_folder, 'output', sub_folder)
+    check_folder_existence(sub_folder)
+
+    return sub_folder
+
+def extract_image_from_pdf(pdf_path):
+
+    folder_name = handle_sub_folder(pdf_path, 'images')
+
     pdf = PyPDF2.PdfReader(pdf_path)
-    image_count = 0
 
+    image_count = 0
     for page_num, page in enumerate(pdf.pages):
         xObject = page['/Resources']['/XObject'].get_object()
         for obj in xObject:
             if xObject[obj]['/Subtype'] == '/Image':
                 image_count += 1
-                if image_count % 2 == 0: continue
+                if image_count % 2 == 0: continue  # Discard measurements
                 img = xObject[obj].get_data()
-                img_file_path = os.path.join(output_folder, f"image_{file_num}.png")
+                pdf_name = pdf_path.split(".")[0].split("\\")[-1]
+                img_name = f"{pdf_name}.png"
+                img_file_path = os.path.join(folder_name, img_name)
                 with open(img_file_path, 'wb') as f:
                     f.write(img)
 
 
-def extract_images_from_pdfs(pdf_folder, output_folder):
-    # Create output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+def extract_images_from_pdfs(pdf_folder):
+    
+    print('Extracting images from pdfs..')
 
     for file_num, pdf_filename in enumerate(os.listdir(pdf_folder)):
         if pdf_filename.endswith(".pdf"):
             pdf_path = os.path.join(pdf_folder, pdf_filename)
-            extract_image_from_pdf(pdf_path, output_folder, file_num)
+            extract_image_from_pdf(pdf_path)
 
 
 def loadImages(image_folder, bnw=False):
+
+    check_folder_existence(image_folder)
+
     images = []
     for filename in os.listdir(image_folder):
         if not filename.endswith(".png"): continue
@@ -56,41 +75,49 @@ def split_image(image, chunk_size, width, height):
     return chunks
 
 
-def split_images(input_folder, chunk_size, output_folder):
+def split_images(super_folder, chunk_size, save=False):
 
-    # Create output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    print('Splitting images into chunks..')
 
-    for image_file in os.listdir(input_folder):
+    folder_name = handle_sub_folder(super_folder, 'chunks')
+    image_folder = os.path.join(super_folder, 'output', 'images')
+
+    # Iterate each file in folder
+    chunks = []
+    for img_num, image_file in enumerate(os.listdir(image_folder)):
+        print(f'\r{img_num}')
         if not image_file.endswith(".png"): continue
-        image_path = os.path.join(input_folder, image_file)
+        image_path = os.path.join(image_folder, image_file)
         image = cv2.imread(image_path)
 
         classification = image_file.split('_')[0]
-        tmp_output_folder = os.path.join(output_folder, classification)
+        class_folder = os.path.join(folder_name, classification)
 
-        # Create output folder if it doesn't exist
-        if not os.path.exists(tmp_output_folder):
-            os.makedirs(tmp_output_folder)
+        # Create classification folder
+        if not os.path.exists(class_folder): os.makedirs(class_folder)
 
         # Split the image into chunks
         chunks = split_image(image, chunk_size, 1000, 1025)
         count_chunks = 0
         for i, chunk in enumerate(chunks):
 
+            # Check dimensions
             has_dimensions = np.any(np.array(chunk.shape) == 0)
             if has_dimensions: continue
 
+            # Check red areas
             red = np.array([0, 0, 255])
             red_mask = cv2.inRange(chunk, red, red)
             if np.any(red_mask): continue
 
+            if not save: continue
             # chunk_filename = f"chunk_{image_file.split('_')[1][:-4]}_{i}.png"
             chunk_filename = f"{count_chunks}.png"
-            count_chunks += 1
-            chunk_path = os.path.join(tmp_output_folder, chunk_filename)
+            chunk_path = os.path.join(class_folder, chunk_filename)
             cv2.imwrite(chunk_path, chunk)
+            count_chunks += 1
+            chunks.append(chunk)
+    return chunks
 
 def expand(image, divider):
     height, width, _ = image.shape
@@ -121,6 +148,7 @@ def rotate_image(image, angle):
 
     return rotated_image
 
+
 def crop_image(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert the image to grayscale
     coords = np.column_stack(np.where(gray > 0))  # Find the coordinates of non-black pixels
@@ -141,15 +169,15 @@ def crop_red(image):
     else:
         return None  # No red region found
 
+
 # Main script
 if __name__ == "__main__":
-    pdf_folder = "Files"
-    output_folder = "training_data"
+    pdf_folder = "S230815_2 scans"
     chunk_size = 25
 
     print(f'Processing files in size {chunk_size}..')
 
-    # extract_images_from_pdfs(pdf_folder, output_folder)
-    split_images(output_folder, chunk_size)
+    extract_images_from_pdfs(pdf_folder)
+    split_images(pdf_folder, chunk_size, save=True)
 
     print(f'Complete.')
