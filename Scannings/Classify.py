@@ -1,6 +1,7 @@
 import numpy as np
 import copy, cv2, os
 import ConvertImages
+import shutil
 
 substracts = {
     "red": [0, 255, 255],
@@ -14,7 +15,7 @@ substracts = {
 def separate_colors(anotated_img_path):
 
     cover_color = [0, 0, 255]
-    output_folder = ConvertImages.handle_sub_folder(anotated_img_path, 'images')
+    output_folder = ConvertImages.handle_sub_folder(anotated_img_path, 'output/images')
 
     image = cv2.imread(anotated_img_path)
 
@@ -35,7 +36,8 @@ def separate_colors(anotated_img_path):
 
     red_area = np.zeros(image.shape[:2], dtype=np.uint8)
     for i, (name, value) in enumerate(substracts.items()):
-        color_mask = cv2.inRange(hsv_image, np.array(value), np.array(value))
+        value = np.array(value)
+        color_mask = cv2.inRange(hsv_image, value, value)
 
         kernel = np.ones((25, 25), np.uint8)
         color_mask = cv2.dilate(color_mask, kernel, 5)
@@ -82,8 +84,11 @@ if __name__ == '__main__':
 
     super_folder = 'classified'
     # path_no = 'em070.006_binned_jsf-ch12_SS_No Interp.TIF'
-    anotated_img_path = os.path.join(super_folder, 'em070.006_binned_jsf-ch12_SS_Interp.TIF')
+    annotated_img_filename = 'em070.006_binned_jsf-ch12_SS_Interp.TIF'
+    annotated_img_path = os.path.join(super_folder, annotated_img_filename)
     chunk_size = 25
 
-    separate_colors(anotated_img_path)
+    shutil.rmtree(os.path.join(super_folder, 'output'))
+
+    separate_colors(annotated_img_path)
     ConvertImages.split_images(super_folder, chunk_size, save=True)

@@ -5,6 +5,7 @@ stack = ['../Scannings']
 
 while len(stack) > 0:
     path = stack.pop()
+    print()
     print(f'\r{path}', end=" ")
     if 'output' in path:
         print('DELETING', end=" ")

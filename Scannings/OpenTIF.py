@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
     path = 'em064.001_binned_jsf-ch34\em064.001_binned_jsf-ch34.tif'
-    output_folder = "chucnks"
+    output_folder = "chunks"
     chunk_size = 25
     angle = -30
     num_clusters = 4
@@ -18,8 +18,8 @@ if __name__ == '__main__':
     _, image = cv2.threshold(image, 150, 255, cv2.THRESH_BINARY)
     image = cv2.GaussianBlur(image, (5, 5), 10)
 
-    chunks = ConvertImages.split_image(image, chunk_size, 300, 4050)
-    chunks_org = ConvertImages.split_image(org, chunk_size, 300, 4050)
+    chunks = ConvertImages.split_image(image, chunk_size)
+    chunks_org = ConvertImages.split_image(org, chunk_size)
 
     # Create output folder if it doesn't exist
     if not os.path.exists(output_folder):
